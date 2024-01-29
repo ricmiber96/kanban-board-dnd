@@ -33,7 +33,6 @@ module.exports = {
             "error",
             "never"
           ],
-          "eqeqeq": "error",
           "no-trailing-spaces": "error",
           "object-curly-spacing": [
             "error", "always"
@@ -42,8 +41,7 @@ module.exports = {
             "error", { "before": true, "after": true }
           ],
           "no-console": "warn",
-          "react/prop-types": 0,
-        "react/prop-types": "off",
-        "react/react-in-jsx-scope": "off",
+          "react/prop-types": "off",
+          "react/react-in-jsx-scope": "off",
     }
 }
