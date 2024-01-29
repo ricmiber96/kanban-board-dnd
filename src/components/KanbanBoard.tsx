@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import PlusIcon from '../icons/PlusIcon'
-import { type Id, type Column, type Columns } from '../types'
+import { type Id, type Column, type Columns, type Task } from '../types'
 import ColumnContainer from './ColumnContainer'
 import { DndContext, type DragEndEvent, DragOverlay, type DragStartEvent, useSensors, useSensor, PointerSensor } from '@dnd-kit/core'
 import { SortableContext, arrayMove } from '@dnd-kit/sortable'
@@ -8,6 +8,7 @@ import { createPortal } from 'react-dom'
 
 export const KanbanBoard: React.FC = () => {
   const [columns, setColumns] = useState<Column[]>([])
+  const [tasks, setTasks] = useState<Task[]>([])
   const columnsId = useMemo(() => columns.map((column) => column.id), [columns])
   const [activeColumn, setActiveColumn] = useState<Column | null>(null)
   console.log(columns)
@@ -50,6 +51,28 @@ export const KanbanBoard: React.FC = () => {
     })
   }
 
+  const updateColumnTitle = (id: Id, title: string) => {
+    const newColumns = columns.map((column) => {
+      if (column.id === id) {
+        return {
+          ...column,
+          title
+        }
+      }
+      return column
+    })
+    setColumns(newColumns)
+  }
+
+  const createNewTask = (columnId: Id) => {
+    const newTask: Task = {
+      id: window.crypto.randomUUID(),
+      columnId,
+      content: `Task ${tasks.length + 1}`
+    }
+    setTasks([...tasks, newTask])
+  }
+
   // This function make the drag and drop and click events works
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -66,7 +89,13 @@ export const KanbanBoard: React.FC = () => {
           <div className='flex gap-4'>
             <SortableContext items={columnsId}>
               {columns.map((column) => (
-                <ColumnContainer key={column.id} column={column} deleteColumn={deleteColumn} />
+                <ColumnContainer
+                  key={column.id}
+                  column={column}
+                  deleteColumn={deleteColumn}
+                  updateColumnTitle={updateColumnTitle}
+                  createNewTask={createNewTask}
+                  tasks={tasks.filter((task) => task.columnId === column.id)} />
               ))
               }
             </SortableContext>
@@ -80,7 +109,7 @@ export const KanbanBoard: React.FC = () => {
             createPortal(
               <DragOverlay>
                 { activeColumn !== null && (
-                  <ColumnContainer column={activeColumn} deleteColumn={deleteColumn} />
+                  <ColumnContainer column={activeColumn} deleteColumn={deleteColumn} updateColumnTitle={updateColumnTitle} createNewTask={createNewTask} />
                 )}
               </DragOverlay>, document.body)
           }
