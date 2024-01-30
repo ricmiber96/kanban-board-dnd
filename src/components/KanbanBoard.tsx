@@ -29,13 +29,13 @@ export const KanbanBoard: React.FC = () => {
   const onDragStart = (event: DragStartEvent) => {
     console.log(event)
     if (event.active.data.current?.type === 'Column') {
-      setActiveColumn(event.active.data.current.column)
+      setActiveColumn(event.active.data.current.column as Column)
     }
   }
 
   const onDragEnd = (event: DragEndEvent) => {
     const { active, over } = event
-    if (!over) {
+    if (over === null) {
       return
     }
     const activeColumnId = active.id
@@ -73,6 +73,24 @@ export const KanbanBoard: React.FC = () => {
     setTasks([...tasks, newTask])
   }
 
+  const deleteTask = (id: Id) => {
+    const filteredTasks = tasks.filter((task) => task.id !== id)
+    setTasks(filteredTasks)
+  }
+
+  const updateTask = (id: Id, content: string) => {
+    const newTasks = tasks.map((task) => {
+      if (task.id === id) {
+        return {
+          ...task,
+          content
+        }
+      }
+      return task
+    })
+    setTasks(newTasks)
+  }
+
   // This function make the drag and drop and click events works
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -95,7 +113,9 @@ export const KanbanBoard: React.FC = () => {
                   deleteColumn={deleteColumn}
                   updateColumnTitle={updateColumnTitle}
                   createNewTask={createNewTask}
-                  tasks={tasks.filter((task) => task.columnId === column.id)} />
+                  tasks={tasks.filter((task) => task.columnId === column.id)}
+                  deleteTask={deleteTask}
+                  updateTask={updateTask}/>
               ))
               }
             </SortableContext>
@@ -109,7 +129,16 @@ export const KanbanBoard: React.FC = () => {
             createPortal(
               <DragOverlay>
                 { activeColumn !== null && (
-                  <ColumnContainer column={activeColumn} deleteColumn={deleteColumn} updateColumnTitle={updateColumnTitle} createNewTask={createNewTask} />
+                  <ColumnContainer
+                    tasks={tasks.filter(
+                      (task) => task.columnId === activeColumn.id
+                    )}
+                    column={activeColumn}
+                    deleteColumn={deleteColumn}
+                    updateColumnTitle={updateColumnTitle}
+                    createNewTask={createNewTask}
+                    deleteTask={deleteTask}
+                    updateTask={updateTask} />
                 )}
               </DragOverlay>, document.body)
           }

@@ -16,4 +16,8 @@ body,
   ::-webkit-scrollbar-thumb {
     @apply bg-purple-700 rounded-xl;
   }
+
+.task > ::-webkit-scrollbar-thumb {
+    @apply bg-purple-700 rounded-xl;
+  }
   

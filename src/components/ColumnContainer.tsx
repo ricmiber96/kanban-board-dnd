@@ -13,10 +13,12 @@ interface Props {
   deleteColumn: (id: Id) => void
   updateColumnTitle: (id: Id, title: string) => void
   createNewTask: (columnId: Id) => void
+  deleteTask: (id: Id) => void
+  updateTask: (id: Id, content: string) => void
 }
 
 export const ColumnContainer: React.FC<Props> = (props: Props) => {
-  const { column, deleteColumn, updateColumnTitle, createNewTask, tasks } = props
+  const { column, deleteColumn, updateColumnTitle, createNewTask, tasks, deleteTask, updateTask } = props
   const [editMode, setEditMode] = useState(false)
 
   const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
@@ -72,7 +74,7 @@ export const ColumnContainer: React.FC<Props> = (props: Props) => {
         </p>
         <button
           onClick={() => { deleteColumn(column.id) }}
-          className='h-[30px] w-[30px] rounded-full bg-appBackgroundColor stroke-gray-500  hover:stroke-purple-600 flex justify-center items-center'>
+          className='h-[30px] w-[30px] rounded-full bg-appBackgroundColor stroke-gray-500  hover:stroke-white flex justify-center items-center'>
           <TrashIcon />
         </button>
       </div>
@@ -81,7 +83,7 @@ export const ColumnContainer: React.FC<Props> = (props: Props) => {
       <div className='flex flex-grow flex-col  p-2 overflow-x-hidden overflow-y-auto'>
         {
           tasks.map((task) => (
-            <TaskCard key={task.id} task={task} />
+            <TaskCard key={task.id} task={task} deleteTask={deleteTask} updateTask={updateTask} />
           ))
         }
       </div>
