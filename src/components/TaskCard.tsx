@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { type Id, type Task } from '../types'
 import TrashIcon from '../icons/TrashIcon'
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 
 interface Props {
   // TODO: Define the component props
@@ -9,9 +11,26 @@ interface Props {
   updateTask: (id: Id, content: string) => void
 }
 
-export const TaskCard: React.FC<Props> = ({ task, deleteTask, updateTask }: Props) => {
+export const TaskCard: React.FC<Props> = (props: Props) => {
+  const { task, deleteTask, updateTask } = props
   const [mouseOver, setMouseOver] = useState(false)
   const [editMode, setEditMode] = useState(false)
+
+  console.log(task.id)
+
+  const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
+    id: task.id,
+    data: {
+      type: 'Task',
+      task
+    },
+    disabled: editMode
+  })
+
+  const taskStyle = {
+    transform: CSS.Transform.toString(transform),
+    transition
+  }
 
   const toggleEditMode = (): void => {
     setEditMode(!editMode)
@@ -20,11 +39,25 @@ export const TaskCard: React.FC<Props> = ({ task, deleteTask, updateTask }: Prop
 
   console.log(editMode, mouseOver)
 
+  if (isDragging) {
+    return (
+      <div className='h-[100px] min-h-[100px] relative items-center text-left flex  bg-appBackgroundColor text-white p-4 rounded-lg my-1.5 mx-1 opacity-30 border-2 border-purple-600'>
+        <p className='my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap'>
+          {task.content}
+        </p>
+      </div>
+    )
+  }
+
   if (editMode) {
     return (
       <div
+        ref={setNodeRef}
+        style={taskStyle}
+        {...attributes}
+        {...listeners}
         key={task.id}
-        className='h-[100px] min-h-[100px] relative items-center text-left flex  bg-appBackground text-white p-4 rounded-lg my-1.5 mx-1 hover:ring-2 hover:ring-inset hover:ring-purple-700 cursor-grab'>
+        className='h-[100px] min-h-[100px] relative items-center text-left flex  bg-appBackgroundColor text-white p-4 rounded-lg my-1.5 mx-1 hover:ring-2 hover:ring-inset hover:ring-purple-700 cursor-grab'>
         <textarea
           className='w-full h-90%  text-white p-4 resize-none border-none rounded bg-transparent focus:outline-none'
           value={task.content}
@@ -43,6 +76,10 @@ export const TaskCard: React.FC<Props> = ({ task, deleteTask, updateTask }: Prop
 
   return (
     <div
+      ref={setNodeRef}
+      style={taskStyle}
+      {...attributes}
+      {...listeners}
       onClick={toggleEditMode}
       onMouseEnter={() => { setMouseOver(true) }}
       onMouseLeave={() => { setMouseOver(false) }}
