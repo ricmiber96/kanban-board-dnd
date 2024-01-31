@@ -6,6 +6,9 @@ import { DndContext, type DragEndEvent, DragOverlay, type DragStartEvent, useSen
 import { SortableContext, arrayMove } from '@dnd-kit/sortable'
 import { createPortal } from 'react-dom'
 import TaskCard from './TaskCard'
+import { Button } from './ui/button'
+import Navbar from './NavBar'
+import Sidebar from './SideBar'
 
 export const KanbanBoard: React.FC = () => {
   const [columns, setColumns] = useState<Column[]>([])
@@ -218,58 +221,62 @@ export const KanbanBoard: React.FC = () => {
   )
 
   return (
-    <div className='m-auto flex min-h-screen w-full items-center overflow-x-auto overflow-y-hidden px-[40px]'>
-      <div className='m-auto'>
-        <DndContext sensors={sensors} onDragStart={onDragStart} onDragEnd={onDragEnd} onDragOver={onDragOver}>
-          <div className='flex gap-4'>
-            <SortableContext items={columnsId}>
-              {columns.map((column) => (
-                <ColumnContainer
-                  key={column.id}
-                  column={column}
-                  deleteColumn={deleteColumn}
-                  updateColumnTitle={updateColumnTitle}
-                  createNewTask={createNewTask}
-                  tasks={tasks.filter((task) => task.columnId === column.id)}
-                  deleteTask={deleteTask}
-                  updateTask={updateTask}/>
-              ))
-              }
-            </SortableContext>
-            <button
-              onClick={() => { createNewColumn() }}
-              className='h-[60px] w-[350px] min-w-[350px] flex flex-row gap-4 border-2 hover:border-purple-600 border-columnBackgroundColor bg-appBackgroundColor text-white font-bold p-4 rounded-lg cursor-pointer'>
-              <PlusIcon/> Add Column
-            </button>
-          </div>
-          {
-            createPortal(
-              <DragOverlay>
-                { activeColumn !== null && (
+    <>
+      <Navbar/>
+      <div className='m-auto flex min-h-screen w-full items-center overflow-x-auto overflow-y-hidden px-[40px]'>
+        <div className='m-auto'>
+          <Sidebar/>
+          <DndContext sensors={sensors} onDragStart={onDragStart} onDragEnd={onDragEnd} onDragOver={onDragOver}>
+            <div className='flex gap-4 ml-60 relative'>
+              <SortableContext items={columnsId}>
+                {columns.map((column) => (
                   <ColumnContainer
-                    tasks={tasks.filter(
-                      (task) => task.columnId === activeColumn.id
-                    )}
-                    column={activeColumn}
+                    key={column.id}
+                    column={column}
                     deleteColumn={deleteColumn}
                     updateColumnTitle={updateColumnTitle}
                     createNewTask={createNewTask}
+                    tasks={tasks.filter((task) => task.columnId === column.id)}
                     deleteTask={deleteTask}
-                    updateTask={updateTask} />
-                )}
-                {
-                  activeTask !== null && (
-                    <TaskCard
-                      task={activeTask}
+                    updateTask={updateTask}/>
+                ))
+                }
+              </SortableContext>
+              <button
+                onClick={() => { createNewColumn() }}
+                className='h-[60px] w-[350px] min-w-[350px] flex flex-row gap-4 border-2 hover:border-purple-600 border-columnBackgroundColor bg-appBackgroundColor text-white font-bold p-4 rounded-lg cursor-pointer'>
+                <PlusIcon/> Add Column
+              </button>
+            </div>
+            {
+              createPortal(
+                <DragOverlay>
+                  { activeColumn !== null && (
+                    <ColumnContainer
+                      tasks={tasks.filter(
+                        (task) => task.columnId === activeColumn.id
+                      )}
+                      column={activeColumn}
+                      deleteColumn={deleteColumn}
+                      updateColumnTitle={updateColumnTitle}
+                      createNewTask={createNewTask}
                       deleteTask={deleteTask}
                       updateTask={updateTask} />
-                  )
-                }
-              </DragOverlay>, document.body)
-          }
-        </DndContext>
+                  )}
+                  {
+                    activeTask !== null && (
+                      <TaskCard
+                        task={activeTask}
+                        deleteTask={deleteTask}
+                        updateTask={updateTask} />
+                    )
+                  }
+                </DragOverlay>, document.body)
+            }
+          </DndContext>
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 
