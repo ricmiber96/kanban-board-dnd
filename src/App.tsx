@@ -1,11 +1,14 @@
 import { useState } from 'react'
 import './App.css'
 import KanbanBoard from './components/KanbanBoard'
+import { ThemeProvider } from './components/themeProvider'
 
 function App () {
   return (
     <>
-      <KanbanBoard/>
+      <ThemeProvider defaultTheme='light' storageKey='vite-ui-theme'>
+        <KanbanBoard/>
+      </ThemeProvider>
     </>
   )
 }

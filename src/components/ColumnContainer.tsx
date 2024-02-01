@@ -57,7 +57,7 @@ export const ColumnContainer: React.FC<Props> = (props: Props) => {
         {...listeners}
         onClick={() => { setEditMode(!editMode) }}
         className='flex flex-row items-center justify-between bg-appBackgroundColor border-columnBackgroundColor h-[60px] font-bold text-md cursor-grab border-4 rounded-lg gap-4 p-4 '>
-        <p className='font-bold bg-columnBackgroundColor px-2 py-1 rounded-lg' >0</p>
+        <p className='font-bold px-2 py-1 rounded-lg bg-purple-700' >({tasks.length})</p>
         <p className='text-white font-bold'>
           {!editMode && column.title}
           {editMode &&

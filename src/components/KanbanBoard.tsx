@@ -242,11 +242,12 @@ export const KanbanBoard: React.FC = () => {
                 ))
                 }
               </SortableContext>
-              <button
+              <div
                 onClick={() => { createNewColumn() }}
-                className='h-[60px] w-[350px] min-w-[350px] flex flex-row gap-4 border-2 hover:border-purple-600 border-columnBackgroundColor bg-appBackgroundColor text-white font-bold p-4 rounded-lg cursor-pointer'>
-                <PlusIcon/> Add Column
-              </button>
+                className='w-[350px] h-[500px] max-h-[500px]  flex items-center justify-center flex-row gap-4 border-2 hover:border-purple-600 hover:text-purple-600 border-columnBackgroundColor bg-appBackgroundColor text-white  text-xl font-bold p-4 rounded-lg cursor-pointer'>
+                <PlusIcon/>
+                <p>Add Column</p>
+              </div>
             </div>
             {
               createPortal(

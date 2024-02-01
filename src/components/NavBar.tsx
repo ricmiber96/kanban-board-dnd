@@ -3,6 +3,7 @@ import { Button } from './ui/button'
 import PlusIcon from '@/icons/PlusIcon'
 import MoreIcon from '@/icons/MoreIcon'
 import LogoIcon from '@/icons/LogIcon'
+import { Edit, EditIcon, Trash, TrashIcon } from 'lucide-react'
 
 interface Props {
   // TODO: Define the component props
@@ -18,12 +19,12 @@ export const Navbar: React.FC<Props> = () => {
       </div>
       <div className='flex items-center justify-items-end justify-end gap-4'>
         <Button className='gap-2'>
-          <PlusIcon/>
-          Add Column
+          <EditIcon/>
+          Edit Board
         </Button>
-        <Button variant="secondary" className='gap-2'>
-          <MoreIcon/>
-          More Options
+        <Button variant="destructive" className='gap-2'>
+          <TrashIcon/>
+          Delete Board
         </Button>
       </div>
     </header>
