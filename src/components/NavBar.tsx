@@ -4,6 +4,7 @@ import PlusIcon from '@/icons/PlusIcon'
 import MoreIcon from '@/icons/MoreIcon'
 import LogoIcon from '@/icons/LogIcon'
 import { Edit, EditIcon, Trash, TrashIcon } from 'lucide-react'
+import DialogEditBoard from './DialogEditBoard'
 
 interface Props {
   // TODO: Define the component props
@@ -18,10 +19,7 @@ export const Navbar: React.FC<Props> = () => {
         <h3 className='text-white font-bold ml-10 text-xl'>Board</h3>
       </div>
       <div className='flex items-center justify-items-end justify-end gap-4'>
-        <Button className='gap-2'>
-          <EditIcon/>
-          Edit Board
-        </Button>
+        <DialogEditBoard/>
         <Button variant="destructive" className='gap-2'>
           <TrashIcon/>
           Delete Board
