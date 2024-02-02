@@ -25,8 +25,8 @@ export const SwitchMode: React.FC<Props> = ({ }) => {
   }
 
   return (
-    <div className="flex fixed bottom-0 space-x-2 mb-6">
-      <div className='flex w-full items-center justify-center gap-2 stroke-black dark:stroke-white'>
+    <div className="flex space-x-2 mb-6 py-2 px-6 bg-gray-400 dark:bg-gray-700  rounded-lg mx-4">
+      <div className='flex relative w-full items-center justify-center gap-2 stroke-black dark:stroke-white'>
         <SunIcon/>
         <Switch id="airplane-mode"
           checked={isCheck}

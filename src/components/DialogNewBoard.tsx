@@ -21,9 +21,9 @@ export const DialogNewBoard: React.FC<Props> = ({ }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className='w-full space-x-2'>
+        <Button className='w-full space-x-2 gap-4'>
           <PlusIcon/>
-        Add Board
+          Add New Board
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">

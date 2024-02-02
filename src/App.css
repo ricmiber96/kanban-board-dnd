@@ -21,4 +21,38 @@ body,
 .task > ::-webkit-scrollbar-thumb {
     @apply bg-purple-700 rounded-xl;
   }
+
+.toggle-sidebar {
+  width: 50px;
+  height: 70px;
+  background: red;
+  transition-timing-function: ease;
+  transition: width 1s;
+   cursor: pointer;
+}
+
+svg.arrowRight {
+  width: 60px;
+  height: 30px;
+  transition: 1s all ease;
+  display:flex;
+  align-items:center;
+
+}
+
+svg.arrowRight path {
+    transition: 1s all ease;
+    height:100%;
+}
+
+.toggle-sidebar:hover {
+  width: 110px;
+}
+
+.toggle-sidebar:hover svg.arrowRight path {
+  d: path(
+    "M0 9.35772H50.9956L44.2001 2.29941L46.4134 0L57 11L46.4134 22L44.2001 19.7006L50.9956 12.6423H0V9.35772Z"
+  );
+  d: "M0 9.35772H50.9956L44.2001 2.29941L46.4134 0L57 11L46.4134 22L44.2001 19.7006L50.9956 12.6423H0V9.35772Z";
+}
   
